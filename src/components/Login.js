@@ -1,7 +1,16 @@
 import React, {Component} from 'react';
 import { StyleSheet, View, Image, Text, KeyboardAvoidingView, Button, StatusBar, TextInput, TouchableOpacity } from 'react-native';
 import wheevyimg from '../wheevyimg.png';
-
+import firebase from 'firebase';
+var config = {
+    apiKey: "AIzaSyDBZpFNpgJRoK-EM2QkBGDRI5aTpjIjL0A",
+    authDomain: "reactreduxapp-27035.firebaseapp.com",
+    databaseURL: "https://reactreduxapp-27035.firebaseio.com",
+    projectId: "reactreduxapp-27035",
+    storageBucket: "reactreduxapp-27035.appspot.com",
+    messagingSenderId: "675941933456"
+  };
+  firebase.initializeApp(config);
 
 export default class Login extends Component {
   constructor(props){
@@ -13,6 +22,17 @@ export default class Login extends Component {
     }
   }
   navigate(name){
+    firebase.auth().signInWithEmailAndPassword(this.state.username, this.state.password)
+    .then((response)=>{
+      this.props.navigator.push({
+        name
+      })
+    }).catch((error)=>{
+      alert('You are not a user. Please register to login!')
+    })
+  }
+
+  register(name){
     this.props.navigator.push({
       name
     })
@@ -49,9 +69,14 @@ export default class Login extends Component {
             style={styles.input}
             ref={(input)=>this.password=input}
           />
-          <TouchableOpacity onPress={()=>this.navigate('Home')} style={styles.buttonCon}>
+          <TouchableOpacity style={styles.buttonCon}>
             <Text style={styles.buttonText}>LOGIN</Text>
           </TouchableOpacity>
+          <Button
+            color='white'
+            title='create an account'
+            onPress={()=>this.register('Register')}
+          />
         </View>
       </KeyboardAvoidingView>
     )

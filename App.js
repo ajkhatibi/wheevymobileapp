@@ -1,8 +1,8 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import Login from './src/components/Login.js';
-import Splash from './Splash.js';
-import Home from './src/components/Home.js'
+import Profile from './Profile.js';
+import Register from './src/components/Register.js'
 import { Navigator } from 'react-native-deprecated-custom-components';
 
 
@@ -17,6 +17,7 @@ export default class App extends React.Component {
       <Navigator
         initialRoute={{name: 'Login'}}
         renderScene={this.navigatorRenderScene}
+
       />
     );
   }
@@ -25,17 +26,8 @@ export default class App extends React.Component {
     switch (route.name) {
       case 'Login':
         return (<Login navigator = {navigator}/>)
-      case 'Home':
-        return (<Home navigator = {navigator}/>)
+      case 'Register':
+        return (<Register navigator = {navigator}/>)
     }
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#2980b9',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
