@@ -15,19 +15,21 @@ var config = {
 export default class Login extends Component {
   constructor(props){
     super(props)
-    this.navigate = this.navigate.bind(this);
     this.state = {
-      username: '',
-      password: ''
+      username: 'ajkhatibi@nowsoftware.us',
+      password: 'akbar1!2'
     }
   }
-  navigate(name){
+
+  loginToProfile(){
+    console.log('this login to profile function is wokring ' + this.state.username, this.state.password)
     firebase.auth().signInWithEmailAndPassword(this.state.username, this.state.password)
     .then((response)=>{
-      this.props.navigator.push({
-        name
-      })
+      this.props.navigator.immediatelyResetRouteStack([{
+        name: 'Profile'
+      }])
     }).catch((error)=>{
+      console.log(error)
       alert('You are not a user. Please register to login!')
     })
   }
@@ -57,7 +59,7 @@ export default class Login extends Component {
             placeholderTextColor='rgba(255,255,255,0.2)'
             placeholder='username or email'
             style={styles.input}
-            onSubmitEditing={()=>this.password.focus()}
+            // onSubmitEditing={()=>this.password.focus()}
           />
           <TextInput
             onChangeText={(password)=>this.setState({password})}
@@ -67,9 +69,9 @@ export default class Login extends Component {
             placeholderTextColor='rgba(255,255,255,0.2)'
             placeholder='password'
             style={styles.input}
-            ref={(input)=>this.password=input}
+            // ref={(input)=>this.password=input}
           />
-          <TouchableOpacity style={styles.buttonCon}>
+          <TouchableOpacity onPress={this.loginToProfile.bind(this)} style={styles.buttonCon}>
             <Text style={styles.buttonText}>LOGIN</Text>
           </TouchableOpacity>
           <Button

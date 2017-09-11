@@ -5,7 +5,7 @@ export default class Profile extends Component {
   render(){
     return(
       <View style={styles.container}>
-        <Text>Profile</Text>
+        <Text style={styles.text}>Profile</Text>
       </View>
     )
   }
@@ -13,8 +13,11 @@ export default class Profile extends Component {
 
 const styles = StyleSheet.create({
   container: {
-      backgroundColor: 'white',
+      backgroundColor: 'red',
       flex: 1,
 
+  },
+  text: {
+    color: 'red'
   }
 })
