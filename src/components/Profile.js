@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import firebase from 'firebase';
-import { StatusBar, View, StyleSheet, TextInput, KeyboardAvoidingView, FlatList } from 'react-native';
+import { StatusBar, View, Text, StyleSheet, TextInput, KeyboardAvoidingView, FlatList } from 'react-native';
 export default class Profile extends Component {
   constructor(props, context){
     super(props, context)
@@ -10,6 +10,17 @@ export default class Profile extends Component {
       message: '',
       messages: []
     }
+  }
+
+    componentDidMount(event){
+    firebase.database().ref('messages/').on('value', (snapshot)=>{
+      const currentMessages = snapshot.val();
+      if(currentMessages != null){
+        this.setState({
+          messages: currentMessages
+        })
+      }
+    })
   }
 
   updateMessage(event){
@@ -33,7 +44,13 @@ export default class Profile extends Component {
       <KeyboardAvoidingView behavior='padding' style={styles.container}>
             <StatusBar barStyle='light-content'/>
               <View style={{flex: 1, padding: 20}}>
-                <FlatList/>
+                  <FlatList
+                    data={this.state.messages}
+                    renderItem={({item})=>(
+                      <Text >{item.text}</Text>
+                    )}
+                    keyExtractor={(item)=>item.id}
+                  />
               </View>
               <TextInput
                 value={this.state.message}
