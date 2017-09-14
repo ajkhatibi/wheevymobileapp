@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import firebase from 'firebase';
+import { List, ListItem } from 'react-native-elements';
 import { StatusBar, View, Text, StyleSheet, TextInput, KeyboardAvoidingView, FlatList } from 'react-native';
 export default class Profile extends Component {
   constructor(props, context){
@@ -37,13 +38,14 @@ export default class Profile extends Component {
       text: this.state.message
     };
     firebase.database().ref('messages/'+nextMessage.id).set(nextMessage)
+    this.state.message = ''
   }
 
   render(){
     return(
       <KeyboardAvoidingView behavior='padding' style={styles.container}>
             <StatusBar barStyle='light-content'/>
-              <View style={{flex: 1, padding: 20}}>
+              <View style={{flex: 1, padding: 20, opacity: 0.5}}>
                   <FlatList
                     data={this.state.messages}
                     renderItem={({item})=>(
@@ -60,6 +62,8 @@ export default class Profile extends Component {
                 keyboardType='default'
                 returnKeyType='send'
                 placeholderTextColor='rgba(255,255,255,0.2)'
+                placeholder='type a message'
+                ref='messagefield'
               />
       </KeyboardAvoidingView>
     )
@@ -72,7 +76,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255,255,255,0.2)',
     marginBottom: 20,
     color: 'white',
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
+    borderRadius: 25
   },
   container: {
     flex: 1,

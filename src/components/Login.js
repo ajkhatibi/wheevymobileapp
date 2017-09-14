@@ -62,6 +62,7 @@ export default class Login extends Component {
             // onSubmitEditing={()=>this.password.focus()}
           />
           <TextInput
+            onSubmitEditing={this.loginToProfile.bind(this)}
             onChangeText={(password)=>this.setState({password})}
             value={this.state.password}
             returnKeyType='go'
@@ -124,6 +125,7 @@ const styles = StyleSheet.create({
   },
   buttonCon: {
     backgroundColor: '#2980b9',
-    paddingVertical: 15
+    paddingVertical: 15,
+    borderRadius: 25
   }
 });
