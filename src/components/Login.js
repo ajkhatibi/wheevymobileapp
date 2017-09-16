@@ -3,7 +3,7 @@ import { StyleSheet, Alert, View, Image, Text, KeyboardAvoidingView, Button, Sta
 import wheevyimg from '../wheevyimg.png';
 import { SocialIcon } from 'react-native-elements';
 import firebase from 'firebase';
-import { Facebook } from 'expo';
+import { Facebook, Location, Permissions } from 'expo';
 
 var config = {
     apiKey: "AIzaSyDBZpFNpgJRoK-EM2QkBGDRI5aTpjIjL0A",
@@ -20,8 +20,30 @@ export default class Login extends Component {
     super(props)
     this.state = {
       username: 'ajkhatibi@nowsoftware.us',
-      password: 'akbar1!2'
+      password: 'akbar1!2',
+      locationResults: null
     }
+  }
+
+  componentDidMount(){
+    Permissions.askAsync(Permissions.LOCATION)
+    .then((response)=>{
+      if(response.status === 'granted'){
+        Location.getCurrentPositionAsync({})
+        .then((response)=>{
+          this.setState({
+            locationResults: response.coords
+          })
+          console.log('Second promise reveals location at: '+ JSON.stringify(response, null, 4))
+          Alert.alert(JSON.stringify(this.state.locationResults, null, 4))
+        }).catch((error)=>{
+          console.log('second promise error is: '+error)
+        })
+      }
+    })
+    .catch((error)=>{
+      console.log('error on the promise: '+error)
+    })
   }
 
   loginToProfile(){
