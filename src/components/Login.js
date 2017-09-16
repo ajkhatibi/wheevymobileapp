@@ -1,7 +1,10 @@
 import React, {Component} from 'react';
-import { StyleSheet, View, Image, Text, KeyboardAvoidingView, Button, StatusBar, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, Alert, View, Image, Text, KeyboardAvoidingView, Button, StatusBar, TextInput, TouchableOpacity } from 'react-native';
 import wheevyimg from '../wheevyimg.png';
+import { SocialIcon } from 'react-native-elements';
 import firebase from 'firebase';
+import { Facebook } from 'expo';
+
 var config = {
     apiKey: "AIzaSyDBZpFNpgJRoK-EM2QkBGDRI5aTpjIjL0A",
     authDomain: "reactreduxapp-27035.firebaseapp.com",
@@ -30,13 +33,39 @@ export default class Login extends Component {
       }])
     }).catch((error)=>{
       console.log(error)
-      alert('You are not a user. Please register to login!')
+      Alert.alert('You are not a user. Please register to login!')
     })
   }
 
   register(name){
     this.props.navigator.push({
       name
+    })
+  }
+
+  loginWithFacebook(){
+    Facebook.logInWithReadPermissionsAsync('192845417924374',{ permissions: ['public_profile'] })
+    .then((response)=>{
+      switch (response.type) {
+        case 'success':{
+          this.props.navigator.immediatelyResetRouteStack([{
+            name: 'Profile'
+          }])
+        };
+        break;
+        case 'cancel': {
+          Alert.alert('login was canceled')
+        };
+          break;
+        default: {
+          Alert.alert('oopsie, login failed')
+        }
+
+      }
+      console.log('login permissions worked with facebook'+response.type)
+    })
+    .catch((error)=>{
+      Alert.alert('this button for facebook is not working. ')
     })
   }
   render(){
@@ -59,7 +88,6 @@ export default class Login extends Component {
             placeholderTextColor='rgba(255,255,255,0.2)'
             placeholder='username or email'
             style={styles.input}
-            // onSubmitEditing={()=>this.password.focus()}
           />
           <TextInput
             onSubmitEditing={this.loginToProfile.bind(this)}
@@ -75,6 +103,12 @@ export default class Login extends Component {
           <TouchableOpacity onPress={this.loginToProfile.bind(this)} style={styles.buttonCon}>
             <Text style={styles.buttonText}>LOGIN</Text>
           </TouchableOpacity>
+          <SocialIcon
+            title='Sign In With Facebook'
+            button
+            type='facebook'
+            onPress={this.loginWithFacebook.bind(this)}
+          />
           <Button
             color='white'
             title='create an account'

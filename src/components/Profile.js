@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import firebase from 'firebase';
-import { List, ListItem } from 'react-native-elements';
+import { Header } from 'react-native-elements';
 import { StatusBar, View, Text, StyleSheet, TextInput, KeyboardAvoidingView, FlatList } from 'react-native';
 export default class Profile extends Component {
   constructor(props, context){
@@ -44,7 +44,14 @@ export default class Profile extends Component {
   render(){
     return(
       <KeyboardAvoidingView behavior='padding' style={styles.container}>
-            <StatusBar barStyle='light-content'/>
+            <View style={{width: '100%', height: '9%'}}>
+              <Header
+                statusBarProps={{ barStyle: 'light-content' }}
+                leftComponent={{ icon: 'menu', color: '#fff' }}
+                centerComponent={{ text: 'Chat Room', style: { color: '#fff' } }}
+                rightComponent={{ icon: 'home', color: '#fff' }}
+              />
+            </View>
               <View style={{flex: 1, padding: 20, opacity: 0.5}}>
                   <FlatList
                     data={this.state.messages}
@@ -83,4 +90,5 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#3498db'
   }
+
 })
